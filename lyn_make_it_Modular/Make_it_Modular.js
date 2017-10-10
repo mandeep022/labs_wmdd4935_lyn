@@ -1,7 +1,18 @@
-let filterLs = require('./06_make_it_module');
+var fs = require('fs');
+ var path = require('path');
  
- filterLs(process.argv[2], process.argv[3], function (err, data) {
-     data.forEach(function (file) {
-         console.log(file);
+ var listFiles = function(dir, ext, cb) {
+     fs.readdir(dir, function(err, data){
+         if (err) {
+             return cb(err);
+         } else {
+             return cb(null, data.filter(function(file) {
+                 if (path.extname(file).replace('.', '') == ext) {
+                     return file;
+                 }
+             }));
+         }
      });
- });
+ }
+ 
+ module.exports = listFiles;
